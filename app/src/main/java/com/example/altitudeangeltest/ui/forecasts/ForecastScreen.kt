@@ -11,10 +11,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.altitudeangeltest.data.models.Forecast
 
 @Composable
 fun ForecastScreen(
-    forecastViewModel: ForecastViewModel = viewModel()
+    forecastViewModel: ForecastViewModel = viewModel(),
+    onDayClick:()-> Unit
 ) {
     val viewState = forecastViewModel.viewState.observeAsState()
     val uiState = forecastViewModel.uiState.collectAsState()
@@ -34,7 +36,10 @@ Column {
             LazyColumn(modifier = Modifier.fillMaxSize()){
                 val forecasts = (uiState.value as ForecastUiState.Success).forecasts
                 items(forecasts?.forecasts.orEmpty()){forecast ->
-                    DayItem(forecast)
+                    DayItem(forecast, onClick = {
+                        forecastViewModel.forecastDaySelected(forecast)
+                        onDayClick()
+                    })
                 }
             }
 

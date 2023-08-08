@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.altitudeangeltest.data.NetworkClient
+import com.example.altitudeangeltest.data.models.Forecast
 import com.example.altitudeangeltest.data.models.Forecasts
 import com.example.altitudeangeltest.utils.DispatcherProvider
 import com.example.altitudeangeltest.utils.Resource
@@ -26,6 +27,9 @@ class ForecastViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<ForecastUiState>(ForecastUiState.Loading)
     val uiState: StateFlow<ForecastUiState> = _uiState
+
+    private val _dayForecastState = MutableStateFlow<Forecast>(Forecast("",0,null))
+    val dayForecastState: StateFlow<Forecast> = _dayForecastState
 
     init {
         getData()
@@ -49,5 +53,9 @@ class ForecastViewModel @Inject constructor(
 
             }
         }
+    }
+
+    fun forecastDaySelected(forecast: Forecast){
+        _dayForecastState.value = forecast
     }
 }
