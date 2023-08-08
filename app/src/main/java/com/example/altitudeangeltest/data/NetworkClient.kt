@@ -21,8 +21,8 @@ class NetworkClient @Inject constructor(
             Timber.d(response.message())
             if (response.isSuccessful && response.body() != null){
                return  forecastMapper.mapForecast(requireNotNull(response.body()))
-            }else{
-                Log.e("failed",response.message())
+            }else {
+                Timber.tag("failed").e(response.message())
                 Result.failure(Exception("Network Error"))
             }
         } catch(exceptions: Exception) {
