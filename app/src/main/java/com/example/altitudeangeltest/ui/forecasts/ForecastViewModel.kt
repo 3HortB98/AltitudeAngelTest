@@ -28,7 +28,9 @@ class ForecastViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ForecastUiState>(ForecastUiState.Loading)
     val uiState: StateFlow<ForecastUiState> = _uiState
 
-    private val _dayForecastState = MutableStateFlow<Forecast>(Forecast("",0,null))
+    private val _dayForecastState = MutableStateFlow<Forecast>(Forecast("",0,null,"","",
+        emptyList()
+    ))
     val dayForecastState: StateFlow<Forecast> = _dayForecastState
 
     init {

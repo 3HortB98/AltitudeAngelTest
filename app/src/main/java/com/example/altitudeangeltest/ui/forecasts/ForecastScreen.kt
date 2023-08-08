@@ -1,17 +1,20 @@
 package com.example.altitudeangeltest.ui.forecasts
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.altitudeangeltest.data.models.Forecast
 
 @Composable
 fun ForecastScreen(
@@ -21,16 +24,24 @@ fun ForecastScreen(
     val viewState = forecastViewModel.viewState.observeAsState()
     val uiState = forecastViewModel.uiState.collectAsState()
 
-Column {
+Column(modifier = Modifier.fillMaxSize(),
+    horizontalAlignment = Alignment.CenterHorizontally) {
     //todo remove test code
-    Text(text = "Forecast screen")
+    Text(text = "Your 7 day forecast", fontSize = 20.sp)
     Button(onClick = {forecastViewModel.getData()}){
-        Text(text = "CLick")
+        Text(text = "Refresh")
     }
-    Text(text = viewState.value.toString())
 
     when(uiState.value){
-        is ForecastUiState.Loading ->{}
+        is ForecastUiState.Loading ->{
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
+        }
         is ForecastUiState.Success ->{
 
             LazyColumn(modifier = Modifier.fillMaxSize()){
