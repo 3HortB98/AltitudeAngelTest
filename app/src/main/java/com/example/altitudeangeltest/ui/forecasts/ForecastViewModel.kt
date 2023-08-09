@@ -22,13 +22,10 @@ class ForecastViewModel @Inject constructor(
     private val dispatcherProvider: DispatcherProvider
 ):ViewModel() {
 
-    private val _viewState = MutableLiveData("start")
-    val viewState: LiveData<String> = _viewState
-
     private val _uiState = MutableStateFlow<ForecastUiState>(ForecastUiState.Loading)
     val uiState: StateFlow<ForecastUiState> = _uiState
 
-    private val _dayForecastState = MutableStateFlow<Forecast>(Forecast("",0,null,"","",
+    private val _dayForecastState = MutableStateFlow(Forecast("",0,null,"","",
         emptyList()
     ))
     val dayForecastState: StateFlow<Forecast> = _dayForecastState
@@ -39,19 +36,14 @@ class ForecastViewModel @Inject constructor(
 
 
     fun getData(){
-        Resource.loading("")
-        _viewState.value = "data launch"
+        _uiState.value = ForecastUiState.Loading
         viewModelScope.launch {
             val result = networkClient.getForecast()
             if(result.isSuccess){
                 val resultData = result.getOrNull()
                 _uiState.value = ForecastUiState.Success(resultData)
-                Resource.success(resultData)
-                _viewState.value = "got data"
             }else{
                 _uiState.value = ForecastUiState.Error(result.toString())
-                Resource.error("Error getting data",result.toString())
-                _viewState.value = result.toString()
 
             }
         }

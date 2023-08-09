@@ -10,7 +10,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
@@ -21,12 +20,10 @@ fun ForecastScreen(
     forecastViewModel: ForecastViewModel = viewModel(),
     onDayClick:()-> Unit
 ) {
-    val viewState = forecastViewModel.viewState.observeAsState()
     val uiState = forecastViewModel.uiState.collectAsState()
 
 Column(modifier = Modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally) {
-    //todo remove test code
     Text(text = "Your 7 day forecast", fontSize = 20.sp)
     Button(onClick = {forecastViewModel.getData()}){
         Text(text = "Refresh")
